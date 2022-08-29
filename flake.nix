@@ -41,7 +41,7 @@
             };
           };
           config = lib.mkIf config.piperswe-pubkeys.enable {
-            users.user.${config.piperswe-pubkeys.user}.openssh.authorizedKeys.keys = ssh.keys;
+            users.users.${config.piperswe-pubkeys.user}.openssh.authorizedKeys.keys = ssh.keys;
           };
         };
       };
