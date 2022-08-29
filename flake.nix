@@ -8,7 +8,7 @@
     let
       ssh = rec {
         raw = builtins.readFile ./ssh_public_keys;
-        keys = builtins.split "\n" raw;
+        keys = builtins.filter (x: (builtins.isString x) && x != "") (builtins.split "\n" raw);
       };
       pgp = rec {
         raw = builtins.readFile ./pgp_public_keys;
