@@ -23,15 +23,15 @@
     packages.sshAuthorizedKeys = pkgs.writeText "authorized_keys" ssh.raw;
 
     nixosModules.sshAuthorizedKeys = { config, lib }: {
-      options.piperswe_pubkeys = {
+      options.piperswe-pubkeys = {
         enable = lib.mkEnableOption "SSH public keys for Piper";
         user = lib.mkOption {
           type = lib.types.str;
           default = "pmc";
         };
       };
-      config = lib.mkIf config.piperswe_pubkeys.enable {
-        users.user.${config.piperswe_pubkeys.user}.openssh.authorizedKeys.keys = ssh.keys;
+      config = lib.mkIf config.piperswe-pubkeys.enable {
+        users.user.${config.piperswe-pubkeys.user}.openssh.authorizedKeys.keys = ssh.keys;
       };
     };
 
