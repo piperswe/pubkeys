@@ -32,7 +32,7 @@
           inherit ssh pgp;
         };
 
-        nixosModules.sshAuthorizedKeys = { config, lib }: {
+        nixosModules.sshAuthorizedKeys = { config, lib, ... }: {
           options.piperswe-pubkeys = {
             enable = lib.mkEnableOption "SSH public keys for Piper";
             user = lib.mkOption {
