@@ -26,6 +26,13 @@
             ];
           };
           devShells.default = devShells.fetch;
+
+          checks = {
+            sshAuthorizedKeys = packages.sshAuthorizedKeys;
+            sshRawJSON = pkgs.writeText "ssh-raw.json" (builtins.toJSON ssh.raw);
+            sshKeysJSON = pkgs.writeText "ssh-keys.json" (builtins.toJSON ssh.keys);
+            pgpRawJSON = pkgs.writeText "pgp-raw.json" (builtins.toJSON pgp.raw);
+          };
         });
       root = {
         lib = {
