@@ -34,7 +34,7 @@
             pgpRawJSON = pkgs.writeText "pgp-raw.json" (builtins.toJSON pgp.raw);
           };
         });
-      root = {
+      root = rec {
         lib = {
           inherit ssh pgp;
         };
@@ -51,7 +51,34 @@
             users.users.${config.piperswe-pubkeys.user}.openssh.authorizedKeys.keys = ssh.keys;
           };
         };
+
+        checks = perSystem.checks // {
+          x86_64-linux = perSystem.checks.x86_64-linux // {
+            system =
+              let
+                module = { modulesPath, ... }: {
+                  imports = [
+                    "${modulesPath}/installer/cd-dvd/iso-image.nix"
+                  ];
+                  users.users.pmc = {
+                    isNormalUser = true;
+                    description = "Piper McCorkle";
+                  };
+                  piperswe-pubkeys = {
+                    enable = true;
+                    user = "pmc";
+                  };
+                  system.stateVersion = "22.05";
+                };
+                system = nixpkgs.lib.nixosSystem {
+                  system = "x86_64-linux";
+                  modules = [ nixosModules.sshAuthorizedKeys module ];
+                };
+              in
+              system.config.system.build.toplevel;
+          };
+        };
       };
     in
-    root // perSystem;
+    perSystem // root;
 }
